@@ -1,0 +1,53 @@
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+
+export default async function Home() {
+  const featured = await prisma.product.findMany({
+    where: { featured: true, active: true },
+    orderBy: { updatedAt: "desc" },
+    take: 6,
+  });
+
+  return (
+    <main className="mx-auto max-w-6xl p-6">
+      <header className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">444 EVER Candle Company</h1>
+          <p className="mt-2 text-slate-600">Handmade dessert-inspired candles.</p>
+        </div>
+        <Link href="/cart" className="rounded border px-3 py-2">
+          Cart
+        </Link>
+      </header>
+
+      <div className="mt-6 flex gap-3">
+        <Link className="rounded bg-black px-4 py-2 text-white" href="/shop">
+          Shop
+        </Link>
+        <Link className="rounded border px-4 py-2" href="/admin">
+          Admin
+        </Link>
+      </div>
+
+      <h2 className="mt-10 text-xl font-semibold">Featured</h2>
+      {featured.length === 0 ? (
+        <p className="mt-3 text-slate-600">No featured products yet. Run the seed.</p>
+      ) : (
+        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {featured.map((p) => (
+            <Link
+              key={p.id}
+              href={`/products/${p.slug}`}
+              className="rounded border p-4 hover:bg-slate-50"
+            >
+              <div className="font-semibold">{p.name}</div>
+              {p.description ? (
+                <div className="mt-1 text-sm text-slate-600 line-clamp-2">{p.description}</div>
+              ) : null}
+            </Link>
+          ))}
+        </div>
+      )}
+    </main>
+  );
+}
