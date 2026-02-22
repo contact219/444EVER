@@ -1,0 +1,239 @@
+Build a production-ready Admin Dashboard (backend) for an ecommerce site called 444EVER Candles that sells handmade candles. The dashboard must allow admins to manage products, inventory, orders, shipping, payments, customer communications, promotions, and light CRM features. Optimize for an efficient small-team workflow (1–5 admins). The UI should be clean, modern, fast, and mobile-responsive.
+
+1) Goals & Principles
+
+Single pane of glass for daily operations: fulfill orders, update products/prices, track sales, run promotions, communicate with customers.
+
+Auditability: every critical change (price changes, refunds, stock changes, shipment updates) creates an audit log.
+
+Role-based access: Owner/Admin/Staff/Read-only roles.
+
+Replit-ready: easy local dev + cloud deploy; simple env config; seed data; migrations.
+
+2) Recommended Tech (choose sensible defaults)
+
+Frontend Admin UI: Next.js (App Router) + Tailwind + shadcn/ui (or similar component library).
+
+Backend API: Node/TypeScript with REST (or tRPC) and server actions where appropriate.
+
+Database: PostgreSQL with Prisma ORM.
+
+Auth: Admin login with email/password + optional 2FA (TOTP), session-based.
+
+Email: transactional email provider (SendGrid/Mailgun) abstraction with templates.
+
+Payments: Stripe integration (webhooks for payment success, refunds, disputes).
+
+Shipping: support manual shipping + optional shipping label provider integration (Shippo/EasyPost) behind an abstraction.
+
+3) Admin Dashboard Navigation (Left Sidebar)
+
+Implement these sections with routes, components, and API endpoints:
+
+Overview
+
+Orders
+
+Products
+
+Inventory
+
+Customers
+
+Promotions
+
+Email & Templates
+
+Reports & Analytics
+
+CRM / Tasks
+
+Reviews & Support
+
+Settings
+
+Audit Logs
+
+4) Core Features (Must Have)
+A) Overview (Home)
+
+KPI cards: Revenue (today/7d/30d), Orders, AOV, Refunds, Conversion proxy (if available), Top products, Low stock alerts.
+
+Recent activity feed (orders, refunds, stock changes).
+
+Quick actions: “Create Product”, “Create Promo”, “Fulfill Orders”.
+
+B) Orders Management
+
+Order list with filters: status (Pending/Paid/Fulfillment/Shipped/Delivered/Cancelled/Refunded), date range, payment method, channel, customer, SKU.
+
+Order detail page includes:
+
+Customer info + shipping/billing addresses
+
+Items (SKU, options like scent/size/color, quantity, price)
+
+Taxes, discounts, shipping cost, totals
+
+Payment status + Stripe charge ID
+
+Fulfillment: tracking number, carrier, shipping label link
+
+Timeline: payment events, fulfillment updates, customer emails sent
+
+Actions:
+
+Mark paid (if offline), cancel order, refund (full/partial), resend receipt/invoice
+
+Create shipment, add tracking, mark shipped
+
+Print packing slip
+
+Internal notes on order
+
+C) Products & Candle Catalog
+
+Model candles with:
+
+Name, description, scent notes, wax type, burn time, jar type, size/weight, images, category, tags (e.g., “Valentine”, “New”, “Best Seller”)
+
+Variants (size/scent/jar color) with SKUs, cost, price, compare-at price
+
+Status: Draft/Active/Archived
+
+SEO fields: slug, meta title/description
+Admin features:
+
+Create/edit product, manage images, variant pricing, bulk update prices
+
+Collections (e.g., “Spring Drop”, “Signature Line”)
+
+Bundles (e.g., “3-pack sampler”) and gift sets
+
+D) Inventory Management
+
+Stock per SKU/variant
+
+Adjustments with reason codes (damage, restock, manual correction)
+
+Low-stock threshold per SKU
+
+Inventory log and alerts
+
+Optional: supplier restock list
+
+E) Customers (Light CRM)
+
+Customer list with filters: lifetime value, last order date, email subscribed yes/no
+
+Customer profile:
+
+Order history, total spend, average order value, refunds
+
+Contact info, addresses
+
+Tags (VIP, Wholesale, Influencer, “Needs Follow-up”)
+
+Notes + tasks/reminders
+
+Customer service tools:
+
+Create draft email to customer
+
+Discount code creation tied to customer
+
+RMA/issue tracking (simple ticketing)
+
+F) Promotions & Sales
+
+Implement:
+
+Discount codes:
+
+percentage or fixed amount
+
+min spend, usage limits, start/end dates
+
+apply to products/collections
+
+customer-specific codes
+
+Free shipping rules (thresholds, regions)
+
+“Featured products” / “Best Sellers” pinning
+
+Upsells/cross-sells rules:
+
+If cart has X, suggest Y
+
+“Bundle & Save”
+
+Abandoned cart program:
+
+Track abandoned carts (if feasible)
+
+Trigger email sequence (1h / 24h / 72h) with coupon option
+
+Campaign tracker:
+
+Campaign name, dates, code(s), results summary (orders, revenue)
+
+G) Email + Invoices
+
+Transactional emails:
+
+Order confirmation
+
+Payment received
+
+Shipping confirmation w/ tracking
+
+Delivered follow-up + review request
+
+Refund confirmation
+
+Email templates editor (simple rich text/markdown + variables)
+
+Invoice/receipt generation:
+
+PDF invoice downloadable and attachable
+
+Resend invoice button
+
+Email log per customer + per order
+
+H) Reports & Analytics
+
+Sales by day/week/month
+
+Revenue by product/variant/category
+
+Discount impact: revenue with/without discounts
+
+Repeat customer rate
+
+Geography (shipping state/region)
+
+Inventory velocity (fast/slow moving)
+
+Export CSV for bookkeeping
+
+I) Settings
+
+Store settings: business name, address, tax settings, shipping regions
+
+Payment settings (Stripe keys, webhook secret)
+
+Email provider settings
+
+User management + roles
+
+Branding: logo, email footer, invoice footer
+
+Data retention + backups
+
+J) Audit Logs
+
+Record: who did what, when, before/after values
+
+Searchable by entity (order, product, customer)
